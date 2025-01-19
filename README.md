@@ -66,7 +66,7 @@ A brief explanation of each function:
   - `toggle_ui`: Open/close the output window. Includes the output of the last run query as well as the current connection info.
   - `next|prev_db|uri`: Cycle through the configured mongo databases and uris. The output UI will update with the new connection info.
   - `put_input`: Paste the contents of the input register under the cursor. Same as `"ip` if using the default, but works with whatever register is configured.
-  - `put_output`: Paste the contents of the output register under the cursor. Same as `"ip` if using the default, but works with whatever register is configured.
+  - `put_output`: Paste the contents of the output register under the cursor. Same as `"op` if using the default, but works with whatever register is configured.
 
 ## Development
 
