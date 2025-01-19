@@ -17,6 +17,8 @@ to get the same basic functionality inside neovim without all the UI fluff.
 - Has a toggleble UI that shows the current connection info and the output of the latest query run.
 - Supports keymaps for cycling through multiple database and host connections via configurable Uri and Db arrays.
 
+![Basic Usage Demo](/demo_images/basic_usage.gif?raw=true)
+
 ## Installation and Config
 
 The `mongosh` command must be in your `PATH`.
