@@ -25,7 +25,7 @@ Example with [lazy.nvim](https://github.com/folke/lazy.nvim) and default config 
 
 ```lua
 return {
-  dir = "GrammAcc/mongoscripting.nvim",
+  "GrammAcc/mongoscripting.nvim",
   opts = {
     mongo_uris = {"mongodb://localhost:27017"},
     mongo_dbs = {"local"},
