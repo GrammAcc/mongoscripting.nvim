@@ -136,8 +136,12 @@ local function use_db_str()
   return "--eval $'use(\\'" .. M.get_curr_db() .. "\\')'"
 end
 
+local function get_quoted_uri()
+  return "$'" .. M.get_curr_uri() .. "'"
+end
+
 function M.run_buffer()
-  local cmd = "mongosh " .. M.get_curr_uri() .. " --quiet " .. use_db_str() .. " --file " .. vim.fn.expand("%")
+  local cmd = "mongosh " .. get_quoted_uri() .. " --quiet " .. use_db_str() .. " --file " .. vim.fn.expand("%")
   local file = assert(io.popen(cmd .. " 2>&1", "r"), "Unable to read output from mongosh command")
   file:flush()
   local res = file:read("a")
@@ -154,7 +158,7 @@ function M.run_selection()
   local selection = vim.fn.getreg(Config.input_register)
   selection = string.gsub(selection, "'", "\\'")
   selection = string.gsub(selection, '"', '\\"')
-  local cmd = "mongosh " .. M.get_curr_uri() .. " --quiet " .. use_db_str() .. " --eval " .. "$'" .. selection .. "'"
+  local cmd = "mongosh " .. get_quoted_uri() .. " --quiet " .. use_db_str() .. " --eval " .. "$'" .. selection .. "'"
   local file = assert(io.popen(cmd .. " 2>&1", "r"), "Unable to read output from mongosh command")
   file:flush()
   local res = file:read("a")
@@ -175,6 +179,10 @@ function M.setup(opts)
   -- Clear the registers to avoid accidentally executing something from a previous session.
   vim.fn.setreg(Config.input_register, "")
   vim.fn.setreg(Config.output_register, "")
+end
+
+function M.version()
+  return "0.0.2"
 end
 
 return M

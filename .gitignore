@@ -39,3 +39,12 @@ luac.out
 *.x86_64
 *.hex
 
+# Scratch files
+**/*.tmp
+**/tmp.*
+**/*.temp
+**/temp.*
+
+# Vars
+**/.env
+**/.env*
