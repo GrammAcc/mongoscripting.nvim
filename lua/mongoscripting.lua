@@ -150,6 +150,8 @@ function M.run_buffer()
   vim.fn.setreg(Config.output_register, res)
   if L.mongosh_window ~= nil then
     update_ui()
+  else
+    vim.cmd(':normal "' .. Config.output_register .. "p")
   end
 end
 
@@ -167,6 +169,8 @@ function M.run_selection()
   vim.fn.setreg(Config.output_register, res)
   if L.mongosh_window ~= nil then
     update_ui()
+  else
+    vim.cmd(':normal "' .. Config.output_register .. "p")
   end
 end
 
