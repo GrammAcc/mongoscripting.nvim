@@ -1,7 +1,7 @@
 local M = {}
 local L = { mongosh_buffer = nil, mongosh_window = nil }
 
-Config = {
+local Config = {
   mongo_dbs = { "local" },
   mongo_uris = { "mongodb://localhost:27017" },
   input_register = "i",
@@ -80,7 +80,7 @@ function M.next_uri()
     curr_uri_idx = curr_uri_idx + 1
   end
   update_ui()
-  print("Switched Target Uri to: " .. M.get_curr_uri())
+  print("Switched Target Uri to: " .. get_obfuscated_uri())
 end
 
 function M.prev_uri()
@@ -90,7 +90,7 @@ function M.prev_uri()
     curr_uri_idx = curr_uri_idx - 1
   end
   update_ui()
-  print("Switched Target Uri to: " .. M.get_curr_uri())
+  print("Switched Target Uri to: " .. get_obfuscated_uri())
 end
 
 function M.next_db()
@@ -136,12 +136,17 @@ local function use_db_str()
   return "--eval $'use(\\'" .. M.get_curr_db() .. "\\')'"
 end
 
+local function mongosh_options_str()
+  return "--quiet"
+end
+
 local function get_quoted_uri()
   return "$'" .. M.get_curr_uri() .. "'"
 end
 
 function M.run_buffer()
-  local cmd = "mongosh " .. get_quoted_uri() .. " --quiet " .. use_db_str() .. " --file " .. vim.fn.expand("%")
+  local cmdparts = { "mongosh", get_quoted_uri(), mongosh_options_str(), use_db_str(), "--file", vim.fn.expand("%") }
+  local cmd = table.concat(cmdparts, " ")
   local file = assert(io.popen(cmd .. " 2>&1", "r"), "Unable to read output from mongosh command")
   file:flush()
   local res = file:read("a")
@@ -160,7 +165,8 @@ function M.run_selection()
   local selection = vim.fn.getreg(Config.input_register)
   selection = string.gsub(selection, "'", "\\'")
   selection = string.gsub(selection, '"', '\\"')
-  local cmd = "mongosh " .. get_quoted_uri() .. " --quiet " .. use_db_str() .. " --eval " .. "$'" .. selection .. "'"
+  local cmdparts = { "mongosh", get_quoted_uri(), mongosh_options_str(), use_db_str(), "--eval", "$'" .. selection .. "'" }
+  local cmd = table.concat(cmdparts, " ")
   local file = assert(io.popen(cmd .. " 2>&1", "r"), "Unable to read output from mongosh command")
   file:flush()
   local res = file:read("a")
